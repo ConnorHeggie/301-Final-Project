@@ -11,6 +11,11 @@ def getFGmap(filename):
     finalpath = abs_file_path + filename
     image = si.misc.imread(finalpath)
     
+    return image
+    
+    
+
+
 #function where you pass in a file name and it outputs the cooresponding image
 def getPic(filename): 
 
@@ -20,13 +25,4 @@ def getPic(filename):
     image = si.misc.imread(finalpath)
     
     return image
-    
-
-
-
-
-
-
-
-
 
