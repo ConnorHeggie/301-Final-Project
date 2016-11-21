@@ -1,15 +1,17 @@
 import numpy as np
 import scipy as si
 import os
-
-def getImages(filename): 
+#
+def getPic(filename): 
 
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
-    abs_file_path = script_dir + '\images' + '\'
+    abs_file_path = script_dir + "/images/"
     finalpath = abs_file_path + filename
     image = si.misc.imread(finalpath)
     
+    return image
     
+
 
 #img = si.misc.imread(firstfile)   #read images
 #img = rgb2lab(img)  #convert to cielab(a different way to encode colors than RGB)
