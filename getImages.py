@@ -1,18 +1,15 @@
 import numpy as np
-import math
-import matplotlib.pyplot as plt
 import scipy as si
-from skimage.color import rgb2lab,lab2rgb
-from scipy import ndimage 
 import os
 
-def getImages(index): 
+def getImages(filename): 
 
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
-    abs_file_path = script_dir + '\images'
-    namelist = os.listdir(abs_file_path)
+    abs_file_path = script_dir + '\images' + '\'
+    finalpath = abs_file_path + filename
+    image = si.misc.imread(finalpath)
     
-    firstfile = abs_file_path + 'Abyssinian_1.jpg'
+    
 
 #img = si.misc.imread(firstfile)   #read images
 #img = rgb2lab(img)  #convert to cielab(a different way to encode colors than RGB)
