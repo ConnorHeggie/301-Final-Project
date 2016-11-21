@@ -1,5 +1,6 @@
 import numpy as np
 import scipy as si
+from scipy import ndimage
 import os
 
 def getFGmap(filename):
