@@ -1,6 +1,8 @@
 import numpy as np
 import scipy as si
+from scipy import ndimage
 import os
+
 
 def getFGmap(filename):
     
@@ -13,6 +15,8 @@ def getFGmap(filename):
     
     
 
+
+#function where you pass in a file name and it outputs the cooresponding image
 def getPic(filename): 
 
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
@@ -21,3 +25,4 @@ def getPic(filename):
     image = si.misc.imread(finalpath)
     
     return image
+
