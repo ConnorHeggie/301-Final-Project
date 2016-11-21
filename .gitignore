@@ -1,3 +1,4 @@
 /annotations
 /images
+/__pycache__
 test.py

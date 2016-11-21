@@ -10,6 +10,9 @@ def getFGmap(filename):
     abs_file_path = script_dir + '/annotations/trimaps/'
     finalpath = abs_file_path + filename
     image = si.misc.imread(finalpath)
+    image = image.astype(int)
+    
+    image = image % 2
     
     return image
     
@@ -23,6 +26,7 @@ def getPic(filename):
     abs_file_path = script_dir + "/images/"
     finalpath = abs_file_path + filename
     image = si.misc.imread(finalpath)
+    image = image.astype(int)
     
     return image
 
