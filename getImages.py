@@ -4,6 +4,8 @@ from scipy import ndimage
 import os
 
 
+# returns the true foreground / background mapping for a given image
+# -1 is background, 1 is foreground
 def getFGmap(filename):
     
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
@@ -11,8 +13,10 @@ def getFGmap(filename):
     finalpath = abs_file_path + filename
     image = si.misc.imread(finalpath)
     
-    return image
+    image = image.astype(int)
+    image = (image % 2)*2 - 1
     
+    return image
     
 
 
@@ -23,6 +27,7 @@ def getPic(filename):
     abs_file_path = script_dir + "/images/"
     finalpath = abs_file_path + filename
     image = si.misc.imread(finalpath)
+    image = image.astype(int)
     
     return image
 
