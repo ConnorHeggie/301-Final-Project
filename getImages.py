@@ -38,10 +38,10 @@ def getBoundBox(filename):
     finalpath = abs_file_path + filename + ".xml"
     
     xmldoc = minidom.parse(finalpath)
-    itemlist = list(xmldoc.getElementsByTagName('xmin'))
+    
 
         
-    return itemlist
+    return
     
     
     
