@@ -33,7 +33,8 @@ def getPic(filename):
 
 
 # takes a filename as a param, and returns the XML tree root to be used later
-def getXMLTreeRoot(filename):
+# the underscore is there to denote that this is a "private" function to be used only within this file
+def _getXMLTreeRoot(filename):
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
     abs_file_path = script_dir + '/annotations/xmls/'
     finalpath = abs_file_path + filename + ".xml"
@@ -43,9 +44,60 @@ def getXMLTreeRoot(filename):
 
     return root
     
-def geBoundBox(xmlRoot):
+    
+#takes in filename as param and returns a tuple of ((xMin, yMin),(xMax,yMax))
+def getBoundBox(filename):
+    xmlRoot = _getXMLTreeRoot(filename)
+    for el in xmlRoot.iter():
+        if el.tag == 'xmin':
+            xMin = el.text
+        elif el.tag == 'ymin':
+            yMin = el.text
+        elif el.tag == 'xmax':
+            xMax = el.text
+        elif el.tag == 'ymax':
+            yMax = el.text
+    return tuple([tuple([xMin, yMin]), tuple([xMax, yMax])])
+    
+
+#takes in filename as param and returns a tuple of he pic dimmensions
+def getPicSize(filename):
+    xmlRoot = _getXMLTreeRoot(filename)
+    
+    for el in xmlRoot.iter():
+        if el.tag == 'width':
+            w = el.text
+        elif el.tag == 'height':
+            h = el.text
+        elif el.tag == 'depth':
+            d = el.text
+            
+    return tuple([h, w, d])
     
     
+#takes in filename as param and returns a tuple of the pic dimmensions, bb corner locations
+# use this instead of calling each of the other functions individually only if you need both
+def getBBandSize(filename):
+    xmlRoot = _getXMLTreeRoot(filename)
+    
+    for el in xmlRoot.iter():
+        if el.tag == 'xmin':
+            xMin = el.text
+        elif el.tag == 'ymin':
+            yMin = el.text
+        elif el.tag == 'xmax':
+            xMax = el.text
+        elif el.tag == 'ymax':
+            yMax = el.text
+        elif el.tag == 'width':
+            w = el.text
+        elif el.tag == 'height':
+            h = el.text
+        elif el.tag == 'depth':
+            d = el.text
+            
+    return tuple([tuple([h, w, d]), tuple([tuple([xMin, yMin]), tuple([xMax, yMax])])])
+
     
     
     
