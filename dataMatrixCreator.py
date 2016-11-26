@@ -11,12 +11,13 @@ def dataCreator(numbervector):
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
     abs_file_path = script_dir + "/images"
     namelist = os.listdir(abs_file_path)  #creates a vector with all the names of the files
+       
     filename = namelist[numbervector[0]]
-    trainingdata = datamat(filename)
+    trainingdata = datamat(filename[:-4])
     
     for i in range(1,np.size(numbervector)):
         filename = namelist[numbervector[i]]
-        imgdata = datamat(namelist[i])
+        imgdata = datamat(filename[:-4])
         trainingdata = np.concatenate((trainingdata,imgdata))
         
     
