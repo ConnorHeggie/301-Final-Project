@@ -1,7 +1,7 @@
 import numpy as np
 import scipy as si
 from scipy import ndimage
-from xml.dom import minidom
+import xml.etree.ElementTree as ET
 import os
 
 
@@ -31,17 +31,22 @@ def getPic(filename):
     
     return image
 
-    
-def getBoundBox(filename):
+
+# takes a filename as a param, and returns the XML tree root to be used later
+def getXMLTreeRoot(filename):
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
     abs_file_path = script_dir + '/annotations/xmls/'
     finalpath = abs_file_path + filename + ".xml"
     
-    xmldoc = minidom.parse(finalpath)
-    
+    xmlTree = ET.parse(finalpath)
+    root = xmlTree.getroot()
 
-        
-    return
+    return root
+    
+def geBoundBox(xmlRoot):
+    
+    
+    
     
     
     
