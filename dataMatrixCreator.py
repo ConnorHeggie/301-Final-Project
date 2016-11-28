@@ -19,8 +19,6 @@ def dataCreator(numbervector):
         filename = namelist[numbervector[i]]
         imgdata = datamat(filename[:-4])
         trainingdata = np.concatenate((trainingdata,imgdata))
-        
-    
     return trainingdata
 
 
