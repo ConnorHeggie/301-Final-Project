@@ -67,8 +67,3 @@ def datamat(filename):
     return trainingdata   
     
 
-
-
-
-
-

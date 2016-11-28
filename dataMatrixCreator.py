@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from getImages import getPic
+import getImages as gI
 from featureExtraction import datamat
 
 #this function creates a data matrix. You input a vector of the indicies of the
@@ -21,4 +21,20 @@ def dataCreator(numbervector):
         trainingdata = np.concatenate((trainingdata,imgdata))
     return trainingdata
 
-
+    
+    
+# Takes a filename and window height and width as params (default is 5 if none is provided)
+# Returns a basic data matrix with the rows being each window around a given pixel
+# this does not do any feature extraction, only gives you pixels 
+def basicDataMat(filename, winH=None, winW=None):
+    # sets defalt window sizes
+    if winH == None:
+        winH = 5
+    if winW == None:
+        winW = winH
+        
+    
+        
+    
+        
+    

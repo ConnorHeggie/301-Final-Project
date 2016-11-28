@@ -1,6 +1,5 @@
 import numpy as np
 import scipy as si
-from scipy import ndimage
 import xml.etree.ElementTree as ET
 import os
 
@@ -14,7 +13,7 @@ def getFGmap(filename):
     finalpath = abs_file_path + filename + ".png"
     image = si.misc.imread(finalpath)
     
-    image = image.astype(int)
+    image = image.astype(np.int8)
     image = (image % 2)*2 - 1
     
     return image
@@ -27,7 +26,7 @@ def getPic(filename):
     abs_file_path = script_dir + "/images/"
     finalpath = abs_file_path + filename + ".jpg"
     image = si.misc.imread(finalpath)
-    image = image.astype(int)
+    #image = image.astype(np.uint8)
     
     return image
 
