@@ -17,27 +17,20 @@ import time
 testvec = np.random.randint(1,2,size=1) #chooses random images to process
                                             #size determines the number of images 
 testvec = np.array([0])
+
 t = time.time()
-testvec = np.random.randint(0,7000,size=5) #chooses random images to process
-                                            #size determines the number of images
+
 
 datamatrix = dataCreator(testvec)  #data matrix creator
-#labels = yCreator(testvec)          #label creator
+labels = yCreator(testvec)          #label creator
 
-datamatrix = scale(datamatrix)
-kmeans = KMeans(n_clusters=2,max_iter=1000,n_init=10).fit(datamatrix)
-clusterlabels = kmeans.labels_
-
-clusterpic = np.reshape(clusterlabels,(400,600))
-
-plt.imshow(clusterpic)
 #clf = SVC(kernel='rbf',gamma='auto')  #set SVM parameters
 #
 #clf.fit(datamatrix,labels)
 
 
 
-curSVM = svm.SVC()
-curSVM.fit(datamatrix, labels)
-print('Elapsed: %s' % (time.time() - t))
+#curSVM = svm.SVC()
+#curSVM.fit(datamatrix, labels)
+#print('Elapsed: %s' % (time.time() - t))
 

@@ -15,8 +15,8 @@ def datamatPaper(img, windowsize=None):
     if windowsize == None:#size of window around pixel (5 cooresponds to 5x5 grid)
         windowsize = 5
 
-    grayimg = rgb2grey(image)     
-    img = rgb2lab(image)  #convert to cielab(a different way to encode colors than RGB)
+    grayimg = rgb2grey(img)     
+    img = rgb2lab(img)  #convert to cielab(a different way to encode colors than RGB)
 
 
     x,y,_=img.shape
@@ -103,23 +103,24 @@ def datamatPaper(img, windowsize=None):
             gabormag[:,count] = tempmag #add the magnitudes to the matrix
             count = count + 1 #used to keep track of where we are
 
-    gabormag = np.amax(gabormag,axis=0)  #the coefficient we choose is whichever
+    #TF stands for texture feature            
+    TF = np.amax(gabormag,axis=1)  #the coefficient we choose is whichever
                                          #gabor filter gave the largets coefficient
     
 
     
     #creates the data matrix
     #the rows are the individual pixel characteristics(mean,std, and gradient for each color L,a,b)
-#    trainingdata = np.column_stack((CFL,CFa,CFb))
-#    trainingdata = np.column_stack((Lmean,amean,bmean,Lstd,astd,bstd,pixellocation))
-    trainingdata = np.column_stack((gabormag,pixellocation))
+    trainingdata = np.column_stack((CFL,CFa,CFb,TF,pixellocation))
+#    trainingdata = np.column_stack((Lmean,amean,bmean,Lstd,astd,bstd,gabormag,pixellocation))
+#    trainingdata = np.column_stack((gabormag,pixellocation))
 
     return trainingdata
     
 
 # pass a picture and it will return a grayscale version
 def grayScaleImage(pic):
-    return rgb2gray(pic)
+    return rgb2grey(pic)
     
     
 def dataMatPaperPlusGray(pic, windowSize=None):
