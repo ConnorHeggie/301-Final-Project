@@ -13,10 +13,13 @@ import time
 #it pulls in the images, finds the feature vector and cooresponding labels
 #we then do the svm/clustering and can later test it
 
+
 testvec = np.random.randint(1,2,size=1) #chooses random images to process
                                             #size determines the number of images 
 testvec = np.array([0])
-#t = time.time()
+t = time.time()
+testvec = np.random.randint(0,7000,size=5) #chooses random images to process
+                                            #size determines the number of images
 
 datamatrix = dataCreator(testvec)  #data matrix creator
 #labels = yCreator(testvec)          #label creator
@@ -34,6 +37,12 @@ plt.imshow(clusterpic)
 
 
 
+<<<<<<< HEAD
 #curSVM = svm.SVC()
 #curSVM.fit(datamatrix, labels)
 #print('Elapsed: %s' % (time.time() - t))
+=======
+curSVM = svm.SVC()
+curSVM.fit(datamatrix, labels)
+print('Elapsed: %s' % (time.time() - t))
+>>>>>>> 4f2973339625a4e96c7dadb62b9d73c912adcae9
