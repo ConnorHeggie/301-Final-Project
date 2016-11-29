@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from skimage.color import rgb2lab,lab2rgb
+import math
+from skimage.color import rgb2lab,lab2rgb, rgb2grey
+from skimage.filters import gabor
+from scipy.ndimage.filters import gaussian_filter
 from scipy import ndimage 
 import os
 from getImages import getPic
@@ -10,9 +13,10 @@ from getImages import getPic
 #as a data matrix
 def datamat(filename):
     
-    img = getPic(filename)   #read images
-    img = rgb2lab(img)  #convert to cielab(a different way to encode colors than RGB)
-    
+    image = getPic(filename)   #read images
+    grayimg = rgb2grey(image)     
+    img = rgb2lab(image)  #convert to cielab(a different way to encode colors than RGB)
+
     x,y,_=img.shape
     
     windowsize = 5  #size of window around pixel (5 cooresponds to 5x5 grid)
@@ -24,8 +28,8 @@ def datamat(filename):
     stdarray = np.nan_to_num(stdarray)
     
     
-    #making into individual vectors
-    #L,a, and b coorespond to the variables in cielab coloring.
+    #making into individual vectors and normalize
+#    L,a, and b coorespond to the variables in cielab coloring.
     Lmean = np.reshape(meanarray[:,:,0],x*y)/np.amax(meanarray[:,:,0])  #means of windows
     amean = np.reshape(meanarray[:,:,1],x*y)/np.amax(meanarray[:,:,1])
     bmean = np.reshape(meanarray[:,:,2],x*y)/np.amax(meanarray[:,:,2])
@@ -55,14 +59,59 @@ def datamat(filename):
     eb = np.sqrt(dx2**2 + dy2**2) #b
     
     
-    #make into vectors
+    #make into vectors and normalize
     eLvec = np.reshape(eL,x*y)/np.amax(eL)
     eavec = np.reshape(ea,x*y)/np.amax(ea)
     ebvec = np.reshape(eb,x*y)/np.amax(eb)
         
+    onesvec = np.ones(np.size(Lstd))  #create a vector of ones we use below
+    
+    CFL = onesvec - Lstd*eLvec  #these are the "color features"(see paper)
+    CFa = onesvec - astd*eavec  #they represent the uniformity of the pixel area
+    CFb = onesvec - bstd*ebvec  #they are one component of what we train on
+    
+    
+    #Creates location of pixels as vector, coordinates of the pixels in terms
+    #of rows and columns
+    X = np.arange(1.,y+1)
+    Y = np.arange(1.,x+1)
+    Xgrid,Ygrid = np.meshgrid(X,Y)
+    
+    matx = np.reshape(Xgrid,x*y)
+    maty = np.reshape(Ygrid,x*y)
+    
+    pixellocation = np.column_stack((matx,maty))
+    
+    
+    #now implement the gabor filter to get the texture details
+    
+    #these determine the orientation and frequency of the filters
+    #these were determined from the matlab page about image segmentation with
+    #gabor filters
+    frequency = np.array([.2,.4,.49]) #set the frequencies to be used 
+    deltatheta = 45
+    orientation = np.arange(0,180,deltatheta)*math.pi/180  #sets the orientations
+    
+    
+    gabormag = np.zeros((x*y,np.size(frequency)*np.size(orientation))) #initalizes a vector
+    count = 0
+    for i in range(0,np.size(frequency)):
+        for j in range(0,np.size(orientation)):        
+            tempmag,tempimaginary = gabor(grayimg,frequency[i],orientation[j]) #get the magnitude of the gabor filtered images
+            tempmag = np.reshape(tempmag,x*y)
+            tempmag = gaussian_filter(tempmag,1.5*1/frequency[i])  #lowpass filter the textures
+            gabormag[:,count] = tempmag #add the magnitudes to the matrix
+            count = count + 1 #used to keep track of where we are
+
+
+    
+
+    
     #creates the data matrix
     #the rows are the individual pixel characteristics(mean,std, and gradient for each color L,a,b)
-    trainingdata = np.column_stack((Lmean,amean,bmean,Lstd,astd,bstd,eLvec,eavec,ebvec))
+#    trainingdata = np.column_stack((CFL,CFa,CFb))
+    trainingdata = np.column_stack((Lmean,amean,bmean,Lstd,astd,bstd,pixellocation))
+#    trainingdata = np.column_stack((gabormag,pixellocation))
 
     return trainingdata   
     

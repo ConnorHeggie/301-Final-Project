@@ -1,17 +1,35 @@
 # -*- coding: utf-8 -*-
 import numpy as np
-from sklearn import svm
+import matplotlib.pyplot as plt
+from sklearn.svm import SVC
 from dataMatrixCreator import dataCreator
 from labelCreator import yCreator
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import scale
+
 
 #this is the main loop
 #it pulls in the images, finds the feature vector and cooresponding labels
 #we then do the svm/clustering and can later test it
 
-testvec = np.random.randint(0,7000,size=10) #chooses random images to process
+testvec = np.random.randint(1,2,size=1) #chooses random images to process
                                             #size determines the number of images
-                                            
+     
+testvec = np.array([0])
 datamatrix = dataCreator(testvec)  #data matrix creator
-labels = yCreator(testvec)          #label creator
+#labels = yCreator(testvec)          #label creator
+
+datamatrix = scale(datamatrix)
+kmeans = KMeans(n_clusters=2,max_iter=1000,n_init=10).fit(datamatrix)
+clusterlabels = kmeans.labels_
+
+clusterpic = np.reshape(clusterlabels,(400,600))
+
+plt.imshow(clusterpic)
+#clf = SVC(kernel='rbf',gamma='auto')  #set SVM parameters
+#
+#clf.fit(datamatrix,labels)
+
+
 
 
