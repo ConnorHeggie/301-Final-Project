@@ -11,7 +11,7 @@ import time
 
 t = time.time()
 
-testvec = np.random.randint(0,7000,size=10) #chooses random images to process
+testvec = np.random.randint(0,7000,size=5) #chooses random images to process
                                             #size determines the number of images
 
 datamatrix = dataCreator(testvec)  #data matrix creator
