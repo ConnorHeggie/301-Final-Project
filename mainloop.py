@@ -16,7 +16,7 @@ import time
 testvec = np.random.randint(1,2,size=1) #chooses random images to process
                                             #size determines the number of images 
 testvec = np.array([0])
-t = time.time()
+#t = time.time()
 
 datamatrix = dataCreator(testvec)  #data matrix creator
 #labels = yCreator(testvec)          #label creator
@@ -34,6 +34,6 @@ plt.imshow(clusterpic)
 
 
 
-curSVM = svm.SVC()
-curSVM.fit(datamatrix, labels)
-print('Elapsed: %s' % (time.time() - t))
+#curSVM = svm.SVC()
+#curSVM.fit(datamatrix, labels)
+#print('Elapsed: %s' % (time.time() - t))
