@@ -22,18 +22,7 @@ def dataCreator(numbervector):
     return trainingdata
 
     
-    
-# Takes a filename and window height and width as params (default is 5 if none is provided)
-# Returns a basic data matrix with the rows being each window around a given pixel
-# this does not do any feature extraction, only gives you pixels 
-def basicDataMat(filename, winH=None, winW=None):
-    # sets defalt window sizes
-    if winH == None:
-        winH = 5
-    if winW == None:
-        winW = winH
-        
-    
+
         
     
         
