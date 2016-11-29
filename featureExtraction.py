@@ -103,15 +103,16 @@ def datamatPaper(img, windowsize=None):
             gabormag[:,count] = tempmag #add the magnitudes to the matrix
             count = count + 1 #used to keep track of where we are
 
-
+    gabormag = np.amax(gabormag,axis=0)  #the coefficient we choose is whichever
+                                         #gabor filter gave the largets coefficient
     
 
     
     #creates the data matrix
     #the rows are the individual pixel characteristics(mean,std, and gradient for each color L,a,b)
 #    trainingdata = np.column_stack((CFL,CFa,CFb))
-    trainingdata = np.column_stack((Lmean,amean,bmean,Lstd,astd,bstd,pixellocation))
-#    trainingdata = np.column_stack((gabormag,pixellocation))
+#    trainingdata = np.column_stack((Lmean,amean,bmean,Lstd,astd,bstd,pixellocation))
+    trainingdata = np.column_stack((gabormag,pixellocation))
 
     return trainingdata
     

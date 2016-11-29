@@ -37,12 +37,7 @@ plt.imshow(clusterpic)
 
 
 
-<<<<<<< HEAD
-#curSVM = svm.SVC()
-#curSVM.fit(datamatrix, labels)
-#print('Elapsed: %s' % (time.time() - t))
-=======
 curSVM = svm.SVC()
 curSVM.fit(datamatrix, labels)
 print('Elapsed: %s' % (time.time() - t))
->>>>>>> 4f2973339625a4e96c7dadb62b9d73c912adcae9
+
