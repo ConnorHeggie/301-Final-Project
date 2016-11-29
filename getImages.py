@@ -118,11 +118,10 @@ def getBBandSize(filename):
 # takes in a picture and returns a resized version without mutating the original
 def imageResize(pic, newSize=None):
     
-    pic = pic.view()
     if newSize == None:
         newSize = (128,128)
         
-    return imresize(pic, (128,128))
+    return imresize(pic, newSize)
     
     
 # resizes a bunch of photos based on numbervector and saves them in processedImages folder

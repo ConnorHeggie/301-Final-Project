@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from skimage.color import rgb2lab,lab2rgb
+from skimage.color import rgb2lab,lab2rgb,rgb2gray
 from scipy import ndimage 
 import os
 from getImages import getPic
@@ -8,14 +8,13 @@ from getImages import getPic
 
 #function that you feed in a file name of a picture and then outputs the feature vectors
 #as a data matrix
-def datamat(filename):
+def datamatPaper(img, windowsize=None):
+    if windowsize == None:#size of window around pixel (5 cooresponds to 5x5 grid)
+        windowsize = 5
     
-    img = getPic(filename)   #read images
     img = rgb2lab(img)  #convert to cielab(a different way to encode colors than RGB)
     
     x,y,_=img.shape
-    
-    windowsize = 5  #size of window around pixel (5 cooresponds to 5x5 grid)
     
     #finding the mean and standard deviation in a window around each pixel
     meanarray = ndimage.uniform_filter(img,[windowsize,windowsize,1])
@@ -64,6 +63,23 @@ def datamat(filename):
     #the rows are the individual pixel characteristics(mean,std, and gradient for each color L,a,b)
     trainingdata = np.column_stack((Lmean,amean,bmean,Lstd,astd,bstd,eLvec,eavec,ebvec))
 
-    return trainingdata   
+    return trainingdata
     
 
+# pass a picture and it will return a grayscale version
+def grayScaleImage(pic):
+    return rgb2gray(pic)
+    
+    
+def dataMatPaperPlusGray(pic, windowSize=None):
+    if windowSize == None:
+        windowSize = 5
+        
+    dataMat = datamatPaper(pic, windowSize)
+    
+    
+    
+    
+    
+    
+    
