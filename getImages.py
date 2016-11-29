@@ -21,7 +21,7 @@ def getFGmap(filename):
     
 
 #function where you pass in a file name and it outputs the cooresponding image
-def getPic(filename): 
+def getPicBig(filename): 
 
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
     abs_file_path = script_dir + "/images/"
@@ -33,7 +33,7 @@ def getPic(filename):
     
     
 #function where you pass in a file name and it outputs the cooresponding downsampled image
-def getPicSmall(filename):
+def getPic(filename):
     
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
     abs_file_path = script_dir + "/processedImages/"
