@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from getImages import getFGmap
+from getImages import getFGmap, imageResize
 
 #this function creates the label vector. You input a vector of the indicies of the
 #pictures you want to train on
@@ -13,13 +13,13 @@ def yCreator(numbervector):
     namelist = os.listdir(abs_file_path)  #creates a vector with all the names of the files
        
     filename = namelist[numbervector[0]]
-    ymatrix = getFGmap(filename[:-4])  #do the -4 to get rid of .jpg
+    ymatrix = imageResize(getFGmap(filename[:-4]))  #do the -4 to get rid of .jpg
     yvec = np.ndarray.flatten(ymatrix)  #make matrix into a vector
     labelvec = np.array(yvec)  #make a copy of the array
     
     for i in range(1,np.size(numbervector)):
         filename = namelist[numbervector[i]]
-        ymatrix = getFGmap(filename[:-4])  #do the -4 to get rid of .jpg
+        ymatrix = imageResize(getFGmap(filename[:-4]))  #do the -4 to get rid of .jpg
         yvec = np.ndarray.flatten(ymatrix)  #make matrix into a vector
         labelvec = np.concatenate((labelvec,yvec))
     return labelvec

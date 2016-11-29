@@ -6,6 +6,7 @@ from dataMatrixCreator import dataCreator
 from labelCreator import yCreator
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import scale
+import time
 
 
 #this is the main loop
@@ -13,9 +14,10 @@ from sklearn.preprocessing import scale
 #we then do the svm/clustering and can later test it
 
 testvec = np.random.randint(1,2,size=1) #chooses random images to process
-                                            #size determines the number of images
-     
+                                            #size determines the number of images 
 testvec = np.array([0])
+t = time.time()
+
 datamatrix = dataCreator(testvec)  #data matrix creator
 #labels = yCreator(testvec)          #label creator
 
@@ -32,4 +34,6 @@ plt.imshow(clusterpic)
 
 
 
-
+curSVM = svm.SVC()
+curSVM.fit(datamatrix, labels)
+print('Elapsed: %s' % (time.time() - t))

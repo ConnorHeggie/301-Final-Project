@@ -1,7 +1,7 @@
 import os
 import numpy as np
-from getImages import getPic
-from featureExtraction import datamat
+import getImages as gI
+from featureExtraction import datamatPaper
 
 #this function creates a data matrix. You input a vector of the indicies of the
 #pictures you want to use for the data matrix
@@ -13,12 +13,17 @@ def dataCreator(numbervector):
     namelist = os.listdir(abs_file_path)  #creates a vector with all the names of the files
        
     filename = namelist[numbervector[0]]
-    trainingdata = datamat(filename[:-4])
+    trainingdata = datamatPaper(gI.getPic(filename[:-4]))
     
     for i in range(1,np.size(numbervector)):
         filename = namelist[numbervector[i]]
-        imgdata = datamat(filename[:-4])
+        imgdata = datamatPaper(gI.getPic(filename[:-4]))
         trainingdata = np.concatenate((trainingdata,imgdata))
     return trainingdata
 
+    
 
+        
+    
+        
+    
