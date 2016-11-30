@@ -1,19 +1,16 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import math
-from skimage.color import rgb2lab,lab2rgb, rgb2grey
+from skimage.color import rgb2lab,rgb2grey
 from skimage.filters import gabor
-from scipy.ndimage.filters import gaussian_filter
 from scipy import ndimage 
-import os
-from getImages import getPic
+
 
 
 #function that you feed in a file name of a picture and then outputs the feature vectors
 #as a data matrix
 def datamatPaper(img, windowsize=None):
     if windowsize == None:#size of window around pixel (5 cooresponds to 5x5 grid)
-        windowsize = 5
+        windowsize = 3
 
     grayimg = rgb2grey(img)     
     img = rgb2lab(img)  #convert to cielab(a different way to encode colors than RGB)
@@ -30,9 +27,9 @@ def datamatPaper(img, windowsize=None):
     
     #making into individual vectors and normalize
 #    L,a, and b coorespond to the variables in cielab coloring.
-    Lmean = np.reshape(meanarray[:,:,0],x*y)/np.amax(meanarray[:,:,0])  #means of windows
-    amean = np.reshape(meanarray[:,:,1],x*y)/np.amax(meanarray[:,:,1])
-    bmean = np.reshape(meanarray[:,:,2],x*y)/np.amax(meanarray[:,:,2])
+#    Lmean = np.reshape(meanarray[:,:,0],x*y)/np.amax(meanarray[:,:,0])  #means of windows
+#    amean = np.reshape(meanarray[:,:,1],x*y)/np.amax(meanarray[:,:,1])
+#    bmean = np.reshape(meanarray[:,:,2],x*y)/np.amax(meanarray[:,:,2])
     
     
     Lstd = np.reshape(stdarray[:,:,0],x*y)/np.amax(stdarray[:,:,0])   #standard deviations of windows
@@ -73,14 +70,14 @@ def datamatPaper(img, windowsize=None):
     
     #Creates location of pixels as vector, coordinates of the pixels in terms
     #of rows and columns
-    X = np.arange(1.,y+1)
-    Y = np.arange(1.,x+1)
-    Xgrid,Ygrid = np.meshgrid(X,Y)
-    
-    matx = np.reshape(Xgrid,x*y)
-    maty = np.reshape(Ygrid,x*y)
-    
-    pixellocation = np.column_stack((matx,maty))
+#    X = np.arange(1.,y+1)
+#    Y = np.arange(1.,x+1)
+#    Xgrid,Ygrid = np.meshgrid(X,Y)
+#    
+#    matx = np.reshape(Xgrid,x*y)
+#    maty = np.reshape(Ygrid,x*y)
+#    
+#    pixellocation = np.column_stack((matx,maty))
     
     
     #now implement the gabor filter to get the texture details
@@ -88,7 +85,7 @@ def datamatPaper(img, windowsize=None):
     #these determine the orientation and frequency of the filters
     #these were determined from the matlab page about image segmentation with
     #gabor filters
-    frequency = np.array([.2,.4,.49]) #set the frequencies to be used 
+    frequency = np.array([.15,.25,.5]) #set the frequencies to be used 
     deltatheta = 45
     orientation = np.arange(0,180,deltatheta)*math.pi/180  #sets the orientations
     
@@ -99,7 +96,7 @@ def datamatPaper(img, windowsize=None):
         for j in range(0,np.size(orientation)):        
             tempmag,tempimaginary = gabor(grayimg,frequency[i],orientation[j]) #get the magnitude of the gabor filtered images
             tempmag = np.reshape(tempmag,x*y)
-            tempmag = gaussian_filter(tempmag,1.5*1/frequency[i])  #lowpass filter the textures
+#            tempmag = gaussian_filter(tempmag,1.5*1/frequency[i])  #lowpass filter the textures
             gabormag[:,count] = tempmag #add the magnitudes to the matrix
             count = count + 1 #used to keep track of where we are
 
@@ -111,9 +108,9 @@ def datamatPaper(img, windowsize=None):
     
     #creates the data matrix
     #the rows are the individual pixel characteristics(mean,std, and gradient for each color L,a,b)
-    trainingdata = np.column_stack((CFL,CFa,CFb,TF,pixellocation))
-#    trainingdata = np.column_stack((Lmean,amean,bmean,Lstd,astd,bstd,gabormag,pixellocation))
-#    trainingdata = np.column_stack((gabormag,pixellocation))
+    trainingdata = np.column_stack((CFL,CFa,CFb,TF))
+#    trainingdata = np.column_stack((Lmean,amean,bmean,Lstd,astd,bstd,pixellocation))
+#    trainingdata = np.column_stack((TF,pixellocation))
 
     return trainingdata
     
