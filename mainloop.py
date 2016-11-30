@@ -25,11 +25,13 @@ trainvec = np.random.randint(0,7390,size=svmSize) #chooses random images to proc
 svmSize = str(svmSize)
 newPath = os.path.dirname(__file__) + '/svms/'+svmSize
 
+
 if not os.path.exists(newPath):
     os.makedirs(newPath)
 
 datamatrix = dataCreator(trainvec)  #data matrix creator
 labels = yCreator(trainvec)          #label creator
+
 
 curSVM = svm.SVC()
 curSVM.fit(datamatrix, labels)
@@ -38,3 +40,4 @@ joblib.dump(trainvec, 'svms/'+svmSize+'/svm '+svmSize+' Training Vec.pkl')
 joblib.dump(curSVM, 'svms/'+svmSize+'/svm '+svmSize+'.pkl')
 
 print('Elapsed: %s' % (time.time() - t))
+
