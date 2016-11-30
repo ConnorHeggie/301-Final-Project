@@ -9,7 +9,7 @@ from featureExtraction import datamatPaper
 #if you want to train on everything numbervector would be 0:7390
 def dataCreator(numbervector):
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
-    abs_file_path = script_dir + "/images"
+    abs_file_path = script_dir + "/processedImages"
     namelist = os.listdir(abs_file_path)  #creates a vector with all the names of the files
        
     filename = namelist[numbervector[0]]

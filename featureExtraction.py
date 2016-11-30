@@ -1,5 +1,5 @@
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import math
 from skimage.color import rgb2lab,lab2rgb, rgb2grey
 from skimage.filters import gabor
@@ -15,8 +15,8 @@ def datamatPaper(img, windowsize=None):
     if windowsize == None:#size of window around pixel (5 cooresponds to 5x5 grid)
         windowsize = 5
 
-    grayimg = rgb2grey(image)     
-    img = rgb2lab(image)  #convert to cielab(a different way to encode colors than RGB)
+    #grayimg = rgb2grey(img)
+    img = rgb2lab(img)  #convert to cielab(a different way to encode colors than RGB)
 
 
     x,y,_=img.shape
@@ -69,39 +69,39 @@ def datamatPaper(img, windowsize=None):
     CFL = onesvec - Lstd*eLvec  #these are the "color features"(see paper)
     CFa = onesvec - astd*eavec  #they represent the uniformity of the pixel area
     CFb = onesvec - bstd*ebvec  #they are one component of what we train on
-    
-    
-    #Creates location of pixels as vector, coordinates of the pixels in terms
-    #of rows and columns
-    X = np.arange(1.,y+1)
-    Y = np.arange(1.,x+1)
-    Xgrid,Ygrid = np.meshgrid(X,Y)
-    
-    matx = np.reshape(Xgrid,x*y)
-    maty = np.reshape(Ygrid,x*y)
-    
-    pixellocation = np.column_stack((matx,maty))
-    
-    
-    #now implement the gabor filter to get the texture details
-    
-    #these determine the orientation and frequency of the filters
-    #these were determined from the matlab page about image segmentation with
-    #gabor filters
-    frequency = np.array([.2,.4,.49]) #set the frequencies to be used 
-    deltatheta = 45
-    orientation = np.arange(0,180,deltatheta)*math.pi/180  #sets the orientations
-    
-    
-    gabormag = np.zeros((x*y,np.size(frequency)*np.size(orientation))) #initalizes a vector
-    count = 0
-    for i in range(0,np.size(frequency)):
-        for j in range(0,np.size(orientation)):        
-            tempmag,tempimaginary = gabor(grayimg,frequency[i],orientation[j]) #get the magnitude of the gabor filtered images
-            tempmag = np.reshape(tempmag,x*y)
-            tempmag = gaussian_filter(tempmag,1.5*1/frequency[i])  #lowpass filter the textures
-            gabormag[:,count] = tempmag #add the magnitudes to the matrix
-            count = count + 1 #used to keep track of where we are
+#    
+#    
+#    #Creates location of pixels as vector, coordinates of the pixels in terms
+#    #of rows and columns
+#    X = np.arange(1.,y+1)
+#    Y = np.arange(1.,x+1)
+#    Xgrid,Ygrid = np.meshgrid(X,Y)
+#    
+#    matx = np.reshape(Xgrid,x*y)
+#    maty = np.reshape(Ygrid,x*y)
+#    
+#    pixellocation = np.column_stack((matx,maty))
+#    
+#    
+#    #now implement the gabor filter to get the texture details
+#    
+#    #these determine the orientation and frequency of the filters
+#    #these were determined from the matlab page about image segmentation with
+#    #gabor filters
+#    frequency = np.array([.2,.4,.49]) #set the frequencies to be used 
+#    deltatheta = 45
+#    orientation = np.arange(0,180,deltatheta)*math.pi/180  #sets the orientations
+#    
+#    
+#    gabormag = np.zeros((x*y,np.size(frequency)*np.size(orientation))) #initalizes a vector
+#    count = 0
+#    for i in range(0,np.size(frequency)):
+#        for j in range(0,np.size(orientation)):        
+#            tempmag,tempimaginary = gabor(grayimg,frequency[i],orientation[j]) #get the magnitude of the gabor filtered images
+#            tempmag = np.reshape(tempmag,x*y)
+#            tempmag = gaussian_filter(tempmag,1.5*1/frequency[i])  #lowpass filter the textures
+#            gabormag[:,count] = tempmag #add the magnitudes to the matrix
+#            count = count + 1 #used to keep track of where we are
 
 
     
@@ -109,8 +109,8 @@ def datamatPaper(img, windowsize=None):
     
     #creates the data matrix
     #the rows are the individual pixel characteristics(mean,std, and gradient for each color L,a,b)
-#    trainingdata = np.column_stack((CFL,CFa,CFb))
-    trainingdata = np.column_stack((Lmean,amean,bmean,Lstd,astd,bstd,pixellocation))
+    trainingdata = np.column_stack((CFL,CFa,CFb))
+#    trainingdata = np.column_stack((Lmean,amean,bmean,Lstd,astd,bstd))
 #    trainingdata = np.column_stack((gabormag,pixellocation))
 
     return trainingdata
@@ -118,7 +118,7 @@ def datamatPaper(img, windowsize=None):
 
 # pass a picture and it will return a grayscale version
 def grayScaleImage(pic):
-    return rgb2gray(pic)
+    return rgb2grey(pic)
     
     
 def dataMatPaperPlusGray(pic, windowSize=None):
