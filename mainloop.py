@@ -14,9 +14,10 @@ import time
 #we then do the svm/clustering and can later test it
 
 
-testvec = np.random.randint(1,2,size=1) #chooses random images to process
+#testvec = np.random.randint(1,2,size=1) #chooses random images to process
                                             #size determines the number of images 
 testvec = np.array([0])
+
 
 t = time.time()
 
@@ -32,5 +33,5 @@ labels = yCreator(testvec)          #label creator
 
 #curSVM = svm.SVC()
 #curSVM.fit(datamatrix, labels)
-#print('Elapsed: %s' % (time.time() - t))
+print('Elapsed: %s' % (time.time() - t))
 
