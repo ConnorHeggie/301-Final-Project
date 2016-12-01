@@ -9,19 +9,18 @@ from getImages import getFGmap, imageResize
 
 def yCreator(numbervector):
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
-    abs_file_path = script_dir + "/images"
+    abs_file_path = script_dir + "/processedImages"
     namelist = os.listdir(abs_file_path)  #creates a vector with all the names of the files
        
     filename = namelist[numbervector[0]]
-    ymatrix = imageResize(getFGmap(filename[:-4]))  #do the -4 to get rid of .jpg
+    ymatrix = getFGmap(filename[:-4])  #do the -4 to get rid of .jpg
     yvec = np.ndarray.flatten(ymatrix)  #make matrix into a vector
     labelvec = np.array(yvec)  #make a copy of the array
     
     for i in range(1,np.size(numbervector)):
         filename = namelist[numbervector[i]]
-        ymatrix = imageResize(getFGmap(filename[:-4]))  #do the -4 to get rid of .jpg
+        ymatrix = getFGmap(filename[:-4])  #do the -4 to get rid of .jpg
         yvec = np.ndarray.flatten(ymatrix)  #make matrix into a vector
         labelvec = np.concatenate((labelvec,yvec))
     return labelvec
-
 

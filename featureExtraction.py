@@ -1,4 +1,5 @@
 import numpy as np
+# import matplotlib.pyplot as plt
 import math
 from skimage.color import rgb2lab,rgb2grey
 from skimage.filters import gabor
@@ -66,8 +67,7 @@ def datamatPaper(img, windowsize=None):
     CFL = onesvec - Lstd*eLvec  #these are the "color features"(see paper)
     CFa = onesvec - astd*eavec  #they represent the uniformity of the pixel area
     CFb = onesvec - bstd*ebvec  #they are one component of what we train on
-    
-    
+
     #Creates location of pixels as vector, coordinates of the pixels in terms
     #of rows and columns
 #    X = np.arange(1.,y+1)

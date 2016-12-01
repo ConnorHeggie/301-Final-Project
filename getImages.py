@@ -7,10 +7,25 @@ from scipy.misc import imresize, toimage
 
 # returns the true foreground / background mapping for a given image without the extension
 # -1 is background, 1 is foreground
-def getFGmap(filename):
+def getFGmapBig(filename):
     
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
     abs_file_path = script_dir + '/annotations/trimaps/'
+    finalpath = abs_file_path + filename + ".png"
+    image = si.misc.imread(finalpath)
+    
+    image = image.astype(np.int8)
+    image = (image % 2)*2 - 1
+    
+    return image
+    
+
+# returns the true foreground / background mapping for a given image without the extension
+# -1 is background, 1 is foreground
+def getFGmap(filename):
+    
+    script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+    abs_file_path = script_dir + '/processedTrimaps/'
     finalpath = abs_file_path + filename + ".png"
     image = si.misc.imread(finalpath)
     
@@ -44,6 +59,17 @@ def getPic(filename):
     return image
 
 
+# takes a filename for an image to test on, returns the img object
+def getTestPic(filename):
+    
+    script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+    abs_file_path = script_dir + "/test_images/"
+    finalpath = abs_file_path + filename + ".jpg"
+    image = si.misc.imread(finalpath)
+    #image = image.astype(np.uint8)
+    
+    return image
+    
 # takes a filename as a param, and returns the XML tree root to be used later
 # the underscore is there to denote that this is a "private" function to be used only within this file
 def _getXMLTreeRoot(filename):
@@ -125,7 +151,7 @@ def imageResize(pic, newSize=None):
     
     
 # resizes a bunch of photos based on numbervector and saves them in processedImages folder
-def massResize(numbervector):
+def massResizeImages(numbervector):
     
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
     abs_file_path = script_dir + "/images"
@@ -138,6 +164,22 @@ def massResize(numbervector):
         pic = imageResize(pic)
         destination_path = script_dir + '/processedImages/' + name + '.jpg'
         toimage(pic).save(destination_path)
+        
+# resizes a bunch of trimaps based on numbervector and saves them in processedTrimaps folder
+def massResizeAnnotations(numbervector):
+    
+    script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+    abs_file_path = script_dir + "/images"
+    namelist = os.listdir(abs_file_path)  #creates a vector with all the names of the files
+    
+    for i in range(np.size(numbervector)):
+        filename = namelist[numbervector[i]]
+        name = filename[:-4]
+        pic = getFGmap(name)
+        pic = imageResize(pic)
+        destination_path = script_dir + '/processedTrimaps/' + name + '.png'
+        toimage(pic).save(destination_path)
+    
     
     
     
