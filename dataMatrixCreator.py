@@ -2,6 +2,7 @@ import os
 import numpy as np
 import getImages as gI
 from featureExtraction import datamatPaper
+from sklearn.preprocessing import scale
 
 #this function creates a data matrix. You input a vector of the indicies of the
 #pictures you want to use for the data matrix
@@ -19,6 +20,8 @@ def dataCreator(numbervector):
         filename = namelist[numbervector[i]]
         imgdata = datamatPaper(gI.getPic(filename[:-4]))
         trainingdata = np.concatenate((trainingdata,imgdata))
+    
+    trainingdata = scale(trainingdata)    #scales data
     return trainingdata
 
     
