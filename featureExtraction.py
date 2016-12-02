@@ -3,9 +3,8 @@ import numpy as np
 import math
 from skimage.color import rgb2lab,rgb2grey
 from skimage.filters import gabor
-from scipy import ndimage 
-
-
+from scipy import ndimage
+import pySaliencyMap
 
 #function that you feed in a file name of a picture and then outputs the feature vectors
 #as a data matrix
@@ -22,7 +21,7 @@ def datamatPaper(img, windowsize=None):
     #finding the mean and standard deviation in a window around each pixel
     meanarray = ndimage.uniform_filter(img,[windowsize,windowsize,1])
     meansqrarray = ndimage.uniform_filter(img**2,[windowsize,windowsize,1])
-    stdarray = np.sqrt(meansqrarray - meanarray**2)
+    stdarray = np.sqrt(abs(meansqrarray - meanarray**2))
     stdarray = np.nan_to_num(stdarray)
     
     
@@ -85,7 +84,7 @@ def datamatPaper(img, windowsize=None):
     #these determine the orientation and frequency of the filters
     #these were determined from the matlab page about image segmentation with
     #gabor filters
-    frequency = np.array([.15,.25,.5]) #set the frequencies to be used 
+    frequency = np.array([.15,.25,.5]) #set the frequencies to be used
     deltatheta = 45
     orientation = np.arange(0,180,deltatheta)*math.pi/180  #sets the orientations
     
@@ -93,7 +92,7 @@ def datamatPaper(img, windowsize=None):
     gabormag = np.zeros((x*y,np.size(frequency)*np.size(orientation))) #initalizes a vector
     count = 0
     for i in range(0,np.size(frequency)):
-        for j in range(0,np.size(orientation)):        
+        for j in range(0,np.size(orientation)):
             tempmag,tempimaginary = gabor(grayimg,frequency[i],orientation[j]) #get the magnitude of the gabor filtered images
             tempmag = np.reshape(tempmag,x*y)
 #            tempmag = gaussian_filter(tempmag,1.5*1/frequency[i])  #lowpass filter the textures
@@ -108,25 +107,78 @@ def datamatPaper(img, windowsize=None):
     
     #creates the data matrix
     #the rows are the individual pixel characteristics(mean,std, and gradient for each color L,a,b)
-#    trainingdata = np.column_stack((CFL,CFa,CFb,TF))
-    trainingdata = np.column_stack((Lstd,astd,bstd,eLvec,CFL,CFa,CFb,TF))
+
+    trainingdata = np.column_stack((Lstd, astd, bstd, eLvec,TF))
+#    trainingdata = np.column_stack((Lmean,amean,bmean,Lstd,astd,bstd,pixellocation))
 #    trainingdata = np.column_stack((TF,pixellocation))
 
     return (trainingdata,eL,ea,eb)
     
 
-# pass a picture and it will return a grayscale version
-def grayScaleImage(pic):
-    return rgb2grey(pic)
+def dataMatL2(img, windowSize=None):
     
-    
-def dataMatPaperPlusGray(pic, windowSize=None):
-    if windowSize == None:
+    if windowSize==None:
         windowSize = 5
         
-    dataMat = datamatPaper(pic, windowSize)
+    halfWlen = int(np.floor(windowSize/2.0))
     
+    dim = img.shape
+    dataMat = np.ones((0,windowSize**2))
     
+    img = img.astype(np.float)
+    img = np.pad(img, ((halfWlen,halfWlen),(halfWlen,halfWlen), (0,0)), 'edge')
+    
+    for i in range(halfWlen, dim[0]+halfWlen):
+        for j in range(halfWlen, dim[1]+halfWlen):
+            centerPixelRGB = img[i, j, :]
+            window = img[i-halfWlen:i+halfWlen+1, j-halfWlen:j+halfWlen+1, :]
+            # turn it into a window and then take l2 norms of the rgbs vs the center pixel
+            
+            winR = np.array(window[:,:,0].flatten()).T - centerPixelRGB[0]
+            winG = np.array(window[:,:,1].flatten()).T - centerPixelRGB[1]
+            winB = np.array(window[:,:,2].flatten()).T - centerPixelRGB[2]
+    
+            winRGB = np.row_stack((winR, winG, winB))
+            
+            feature = np.linalg.norm(winRGB, axis=0)
+            feature = np.reshape(feature, (1,windowSize**2))
+            
+            dataMat = np.concatenate((dataMat, feature))
+            
+                
+    return dataMat
+
+
+    
+def dataMatPixelLoc(img):
+    
+    x,y,_=img.shape
+    X = np.arange(1.,y+1)
+    Y = np.arange(1.,x+1)
+    Xgrid,Ygrid = np.meshgrid(X,Y)
+    
+    matx = np.reshape(Xgrid,x*y)
+    maty = np.reshape(Ygrid,x*y)
+    
+    pixelLocation = np.column_stack((matx,maty))
+    
+    return pixelLocation
+    
+def dataMatPixelColor(img):
+    return img.flatten().reshape((-1, 3))
+
+    
+def sMap(img):
+    
+    imgsize = img.shape
+    img_width  = imgsize[1]
+    img_height = imgsize[0]
+    sm = pySaliencyMap.pySaliencyMap(img_width, img_height)
+    
+    saliency_map = sm.SMGetSM(img)
+    
+    return saliency_map.reshape(-1, 1)
+   
     
     
     
