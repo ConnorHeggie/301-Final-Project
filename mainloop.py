@@ -16,7 +16,7 @@ import os
 print('Started')
 t = time.time()
 
-svmSize = 50
+svmSize = 4
 
 #trainvec = range(7390) #for all photos
 trainvec = np.random.randint(0,7390,size=svmSize) #chooses random images to process

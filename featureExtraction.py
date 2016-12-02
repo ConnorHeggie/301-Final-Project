@@ -11,7 +11,7 @@ from scipy import ndimage
 #as a data matrix
 def datamatPaper(img, windowsize=None):
     if windowsize == None:#size of window around pixel (5 cooresponds to 5x5 grid)
-        windowsize = 3
+        windowsize = 5
 
     grayimg = rgb2grey(img)     
     img = rgb2lab(img)  #convert to cielab(a different way to encode colors than RGB)
@@ -108,11 +108,11 @@ def datamatPaper(img, windowsize=None):
     
     #creates the data matrix
     #the rows are the individual pixel characteristics(mean,std, and gradient for each color L,a,b)
-    trainingdata = np.column_stack((CFL,CFa,CFb,TF))
-#    trainingdata = np.column_stack((Lmean,amean,bmean,Lstd,astd,bstd,pixellocation))
+#    trainingdata = np.column_stack((CFL,CFa,CFb,TF))
+    trainingdata = np.column_stack((Lstd,astd,bstd,eLvec,CFL,CFa,CFb,TF))
 #    trainingdata = np.column_stack((TF,pixellocation))
 
-    return trainingdata
+    return (trainingdata,eL,ea,eb)
     
 
 # pass a picture and it will return a grayscale version
