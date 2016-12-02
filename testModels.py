@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 from dataMatrixCreator import testMatCreator
 from skimage.morphology import reconstruction
 
-
 # takes in trained svm object (sklearn object) returns fgmap for the testing images
 def testPaperSVM(clf, img):
     dims = img.shape

@@ -31,6 +31,7 @@ def dataCreator(numbervector, winSize=None):
         
     return scale(trainingdata)
 
+
     
 def dataCreatorRandomSampling(numbervector):
     
