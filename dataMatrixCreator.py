@@ -1,7 +1,9 @@
+
 import os
 import numpy as np
 import getImages as gI
-from featureExtraction import datamatPaper, dataMatPixelLoc, dataMatPixelColor, sMap, dataMatL2
+
+from featureExtraction import datamatPaper, sMap, dataMatL2, dataMatPixelColor, dataMatPixelLoc
 from sklearn.preprocessing import scale
 
 #this function creates a data matrix. You input a vector of the indicies of the
@@ -21,7 +23,7 @@ def dataCreator(numbervector, winSize=None):
         filename = namelist[numbervector[i]]
         img = gI.getPic(filename[:-4])
         
-        mat = np.hstack((dataMatPixelColor(img), datamatPaper(img,winSize), dataMatPixelLoc(img), sMap(img), dataMatL2(img, winSize)))
+        mat = np.hstack((datamatPaper(img,winSize), sMap(img),dataMatL2(img)))
         
         if i == 0:
              trainingdata = np.zeros((0, mat.shape[1]))
@@ -40,7 +42,7 @@ def dataCreatorRandomSampling(numbervector):
     
 def testMatCreator(img):
     
-    mat = np.hstack((dataMatPixelColor(img), datamatPaper(img), dataMatPixelLoc(img), sMap(img)))
+    mat = np.hstack((datamatPaper(img), sMap(img),dataMatL2(img)))
     
     return scale(mat)
     

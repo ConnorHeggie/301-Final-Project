@@ -13,7 +13,7 @@ import os
 script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
 abs_file_path = script_dir + "/processedImages"
 namelist = os.listdir(abs_file_path)  #creates a vector with all the names of the files
-filename = namelist[800]
+filename = namelist[4561]
 filename = filename[:-4]
 finalpath = abs_file_path + '/' + filename + ".jpg"
 img = si.misc.imread(finalpath)
@@ -46,5 +46,5 @@ for i in range(0,np.size(frequency)):
 
 TF = np.amax(gabormag,axis=1)
 TFplot = np.reshape(TF,(128,128))
-plt.imshow(TFplot,cmap='gray')
+plt.imshow(TFplot)
 plt.show()

@@ -108,12 +108,11 @@ def datamatPaper(img, windowsize=None):
     #creates the data matrix
     #the rows are the individual pixel characteristics(mean,std, and gradient for each color L,a,b)
 
-    trainingdata = np.column_stack((Lstd, astd, bstd, eLvec,TF))
+    trainingdata = np.column_stack((Lstd, astd, bstd, eLvec, eavec, ebvec,TF))
 #    trainingdata = np.column_stack((Lmean,amean,bmean,Lstd,astd,bstd,pixellocation))
 #    trainingdata = np.column_stack((TF,pixellocation))
 
-    return (trainingdata,eL,ea,eb)
-    
+    return trainingdata
 
 def dataMatL2(img, windowSize=None):
     

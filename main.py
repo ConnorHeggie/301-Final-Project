@@ -18,7 +18,7 @@ import os
 if __name__ == '__main__':
     # read
     script_dir = os.path.dirname(__file__)
-    img = cv2.imread(script_dir+'/test_images/26.jpg')
+    img = cv2.imread(script_dir+'/images/Abyssinian_1.jpg')
     # initialize
     imgsize = img.shape
     img_width  = imgsize[1]

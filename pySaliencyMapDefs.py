@@ -19,7 +19,7 @@ farne_poly_sigma = 1.2
 farne_flags = 0
 
 # parameters for detecting local maxima
-default_step_local = 4
+default_step_local = 7
 
 # feature weights
 weight_intensity   = 0.30
