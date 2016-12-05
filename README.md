@@ -12,3 +12,8 @@ git pull
 git pull --rebase origin master
 --put changes into file on your computers
 --by hand resolves conflicts
+
+To get rid of local stuff and pull the master branch (get rid of everything not committed)
+git reset --hard origin/master
+or
+git stash -u
